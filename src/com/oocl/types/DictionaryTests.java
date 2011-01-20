@@ -164,7 +164,11 @@ public class DictionaryTests {
 	}
 
 	/**
-	 * Quicksort algorithm - not particularly efficient
+	 * Quicksort algorithm - worst-case performance is O(N^2) in time AND SPACE
+	 * where n is the length of the unsorted array. If all elements are equal,
+	 * the search will recurse to a depth of N for every node in the array. That's
+	 * why we couldn't test speed performance with an array of 500,000 identical
+	 * Strings.
 	 * 
 	 * @param unsorted
 	 * @return
