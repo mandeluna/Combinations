@@ -84,30 +84,22 @@ public class DictionaryTests {
 	
 	private void testSimpleSort() {
 		String[] unsorted = new String[]{"pear", "apple", "banana"};
-		String[]  sorted = mergesort(unsorted);
+		String[]  sorted = qsort(unsorted, unsorted.length);
 		for (String word : sorted) {
 			System.out.println(word);
 		}
 	}
 
 	private void testQuicksort500Identical() {
-		ArrayList<String> identical = new ArrayList();
-		for (int i=0; i < 500; i++) {
-			identical.add(new String("Zanzibar"));
+		String[] identical = new String[500];
+		for (int i=0; i < identical.length; i++) {
+			identical[i] = new String("Zanzibar");
 		}
 		long start = new Date().getTime(); 
-		ArrayList<String> sorted = qsort(identical);
+		qsort(identical, identical.length);
 		long finish = new Date().getTime();
-		for (int i=1; i<sorted.size(); i++) {
-			boolean ordered = sorted.get(i-1).compareTo(sorted.get(i)) <= 0;
-			assert(ordered == true);
-			if (!ordered) {
-				System.out.println("failed to sort array");
-				return;
-			}
-		}
-		System.out.println(String.format("Quicksort successfully sorted array of %d elements in %d ms",
-				sorted.size(), finish - start));
+		System.out.println(String.format("Quicksort sorted array of %d elements in %d ms",
+				identical.length, finish - start));
 	}
 
 	private void testHeapsort500kIdentical() {
@@ -118,15 +110,7 @@ public class DictionaryTests {
 		long start = new Date().getTime(); 
 		heapsort(identical);
 		long finish = new Date().getTime();
-		for (int i=1; i<identical.length; i++) {
-			boolean ordered = identical[i-1].compareTo(identical[i]) <= 0;
-			assert(ordered == true);
-			if (!ordered) {
-				System.out.println("failed to sort array");
-				return;
-			}
-		}
-		System.out.println(String.format("Heapsort successfully sorted array of %d elements in %d ms",
+		System.out.println(String.format("Heapsort sorted array of %d elements in %d ms",
 				identical.length, finish - start));
 	}
 
@@ -138,24 +122,17 @@ public class DictionaryTests {
 		long start = new Date().getTime(); 
 		heapsort(identical);
 		long finish = new Date().getTime();
-		for (int i=1; i<identical.length; i++) {
-			boolean ordered = identical[i-1].compareTo(identical[i]) <= 0;
-			assert(ordered == true);
-			if (!ordered) {
-				System.out.println("failed to sort array");
-				return;
-			}
-		}
-		System.out.println(String.format("Mergesort successfully sorted array of %d elements in %d ms",
+		System.out.println(String.format("Mergesort sorted array of %d elements in %d ms",
 				identical.length, finish - start));
 	}
 
 	private void testQuicksort() {
+		String[] unsorted = (String[])myWords.toArray(new String[0]);
 		long start = new Date().getTime(); 
-		ArrayList<String> sorted = qsort(myWords);
+		String[] sorted = qsort(unsorted, unsorted.length);
 		long finish = new Date().getTime();
-		for (int i=1; i<sorted.size(); i++) {
-			boolean ordered = sorted.get(i-1).compareTo(sorted.get(i)) <= 0;
+		for (int i=1; i<sorted.length; i++) {
+			boolean ordered = sorted[i-1].compareTo(sorted[i]) <= 0;
 			assert(ordered == true);
 			if (!ordered) {
 				System.out.println("failed to sort array");
@@ -163,7 +140,7 @@ public class DictionaryTests {
 			}
 		}
 		System.out.println(String.format("Quicksort sorted array of %d elements in %d ms",
-				sorted.size(), finish - start));
+				sorted.length, finish - start));
 	}
 
 	private void testHeapsort() {
@@ -210,27 +187,41 @@ public class DictionaryTests {
 	 * @param unsorted
 	 * @return
 	 */
-	private ArrayList<String> qsort(ArrayList<String> unsorted) {
-		if (unsorted.size() <= 1)
+	private String[] qsort(String[] unsorted, int n) {
+		if (n <= 1)
 			return unsorted;
 		
-		int pindex = (int) Math.floor(Math.random()* unsorted.size());
-		String pivot = unsorted.get(pindex);
-		ArrayList<String> below = new ArrayList<String>();
-		ArrayList<String> above = new ArrayList<String>();
+		int pindex = (int) Math.floor(Math.random()* n);
+		String pivot = unsorted[pindex];
+		// we don't know how many elements will be in each of the above and below arrays
+		// so we have to allocate n elements for each.
+		String[] above = new String[n];
+		String[] below = new String[n];
+		// when we are done aIndex+bIndex == n-1 (less one for the pivot)
+		int aIndex = 0;
+		int bIndex = 0;
 		
-		for (int i=0; i < unsorted.size(); i++) {
-			if (unsorted.get(i) == pivot)
+		for (int i=0; i < n; i++) {
+			if (i == pindex)
 				continue;
-			if (unsorted.get(i).compareTo(pivot) > 0) {
-				above.add(unsorted.get(i));
+			if (unsorted[i].compareTo(pivot) > 0) {
+				above[aIndex++] = unsorted[i];
 			}
 			else
-				below.add(unsorted.get(i));
+				below[bIndex++] = unsorted[i];
 		}
-		ArrayList<String> sorted = qsort(below);
-		sorted.add(pivot);
-		sorted.addAll(qsort(above));
+		
+		below = qsort(below, bIndex);
+		above = qsort(above, aIndex);
+		String[] sorted = new String[n];
+		
+		for (int i=0; i < bIndex; i++) {
+			sorted[i] = below[i];
+		}
+		sorted[bIndex] = pivot;
+		for (int i=0; i < aIndex; i++) {
+			sorted[bIndex+i+1] = above[i];
+		}
 		return sorted;
 	}
 	
