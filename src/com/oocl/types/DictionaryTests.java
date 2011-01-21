@@ -83,8 +83,8 @@ public class DictionaryTests {
 	}
 	
 	private void testSimpleSort() {
-		List<String> unsorted = Arrays.asList(new String[]{"pear", "apple", "banana"});
-		ArrayList<String> sorted = qsort(new ArrayList<String>(unsorted));
+		String[] unsorted = new String[]{"pear", "apple", "banana"};
+		String[]  sorted = mergesort(unsorted);
 		for (String word : sorted) {
 			System.out.println(word);
 		}
@@ -106,7 +106,7 @@ public class DictionaryTests {
 				return;
 			}
 		}
-		System.out.println(String.format("successfully sorted array of %d elements in %d ms",
+		System.out.println(String.format("Quicksort successfully sorted array of %d elements in %d ms",
 				sorted.size(), finish - start));
 	}
 
@@ -126,7 +126,27 @@ public class DictionaryTests {
 				return;
 			}
 		}
-		System.out.println(String.format("successfully sorted array of %d elements in %d ms",
+		System.out.println(String.format("Heapsort successfully sorted array of %d elements in %d ms",
+				identical.length, finish - start));
+	}
+
+	private void testMergesort500kIdentical() {
+		String[] identical = new String[500000];
+		for (int i=0; i < identical.length; i++) {
+			identical[i] = new String("Zanzibar");
+		}
+		long start = new Date().getTime(); 
+		heapsort(identical);
+		long finish = new Date().getTime();
+		for (int i=1; i<identical.length; i++) {
+			boolean ordered = identical[i-1].compareTo(identical[i]) <= 0;
+			assert(ordered == true);
+			if (!ordered) {
+				System.out.println("failed to sort array");
+				return;
+			}
+		}
+		System.out.println(String.format("Mergesort successfully sorted array of %d elements in %d ms",
 				identical.length, finish - start));
 	}
 
@@ -142,7 +162,7 @@ public class DictionaryTests {
 				return;
 			}
 		}
-		System.out.println(String.format("successfully sorted array of %d elements in %d ms",
+		System.out.println(String.format("Quicksort sorted array of %d elements in %d ms",
 				sorted.size(), finish - start));
 	}
 
@@ -159,7 +179,24 @@ public class DictionaryTests {
 				return;
 			}
 		}
-		System.out.println(String.format("successfully sorted array of %d elements in %d ms",
+		System.out.println(String.format("Heapsort sorted array of %d elements in %d ms",
+				sorted.length, finish - start));
+	}
+
+	private void testMergesort() {
+		String[] unsorted = (String[])myWords.toArray(new String[0]);
+		long start = new Date().getTime(); 
+		String[] sorted = mergesort(unsorted);
+		long finish = new Date().getTime();
+		for (int i=1; i<sorted.length; i++) {
+			boolean ordered = sorted[i-1].compareTo(sorted[i]) <= 0;
+			assert(ordered == true);
+			if (!ordered) {
+				System.out.println("failed to sort array");
+				return;
+			}
+		}
+		System.out.println(String.format("Mergesort sorted array of %d elements in %d ms",
 				sorted.length, finish - start));
 	}
 
@@ -195,6 +232,59 @@ public class DictionaryTests {
 		sorted.add(pivot);
 		sorted.addAll(qsort(above));
 		return sorted;
+	}
+	
+	/**
+	 * Mergesort algorithm
+	 * 
+	 * @param unsorted an array list to sort
+	 */
+	public String[] mergesort(String[] unsorted) {
+		if (unsorted.length <= 1)
+			return unsorted;	// sorted
+		
+		// if unsorted.length is even, then left and right will both have n/2 elements
+		// if unsorted.length is odd, then left will have floor(n/2) elements
+		// and right will have ceiling(n/2) elements
+		int maxLeft = unsorted.length / 2;
+		int maxRight = unsorted.length - maxLeft;
+		String[] left = new String[maxLeft];
+		for (int i=0; i < maxLeft; i++) {
+				left[i] = unsorted[i];
+		}
+		String[] right = new String[maxRight];
+		for (int i=maxLeft; i < unsorted.length; i++) {
+			right[i-maxLeft] = unsorted[i];
+		}
+		
+		left = mergesort(left);
+		right = mergesort(right);
+		return merge(left, right);
+	}
+	
+	private String[] merge(String[] lower, String[] upper) {
+		int i = 0;
+		int j = 0;
+		int k = 0;
+		String[] result = new String[lower.length + upper.length];
+		
+		while ((i < lower.length) || (j < upper.length)) {
+			if ((i < lower.length ) && (j < upper.length)) {
+				if (lower[i].compareTo(upper[j]) < 0) {
+					result[k++] = lower[i++];
+				}
+				else
+					result[k++] = upper[j++];
+			}
+			else if (i < lower.length) {
+				result[k++] = lower[i++];
+			}
+			else if (j < upper.length) {
+				result[k++] = upper[j++];
+			}
+		}
+		
+		return result;
 	}
 	
 	/**
@@ -278,7 +368,9 @@ public class DictionaryTests {
 		tester.testLookup();
 		tester.testQuicksort();
 		tester.testHeapsort();
+		tester.testMergesort();
 		tester.testQuicksort500Identical();
 		tester.testHeapsort500kIdentical();
+		tester.testMergesort500kIdentical();
 	}
 }
