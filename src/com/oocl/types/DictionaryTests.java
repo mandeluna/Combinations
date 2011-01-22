@@ -348,9 +348,9 @@ public class DictionaryTests {
 	 */
 	public static void main(String[] args) {
 		
-		LexicalPermuter permuter = new LexicalPermuter();
-		String[] sequence = new String[] {"a", "b", "c", "d", "e"};
-		permuter.permute(sequence);
+	//	LexicalPermuter permuter = new LexicalPermuter();
+	//	String[] sequence = new String[] {"a", "b", "c", "d", "e"};
+	//	permuter.permute(sequence);
 		
 		DictionaryTests tester = new DictionaryTests();
 		tester.testOperations();
