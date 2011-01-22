@@ -347,6 +347,11 @@ public class DictionaryTests {
 	 * @param args are currently ignored. the input file name is hard-coded
 	 */
 	public static void main(String[] args) {
+		
+		LexicalPermuter permuter = new LexicalPermuter();
+		String[] sequence = new String[] {"a", "b", "c", "d", "e"};
+		permuter.permute(sequence);
+		
 		DictionaryTests tester = new DictionaryTests();
 		tester.testOperations();
 		tester.testSimpleSort();
