@@ -352,6 +352,13 @@ public class DictionaryTests {
 	//	String[] sequence = new String[] {"a", "b", "c", "d", "e"};
 	//	permuter.permute(sequence);
 		
+		String[][] arrangements = new Permuter().permute(new String[]{"w", "x", "y", "z"});
+		for (String[] out : arrangements) {
+			for (int i=0; i<out.length; i++)
+				System.out.print(out[i] + " ");
+			System.out.println();
+		}
+		
 		DictionaryTests tester = new DictionaryTests();
 		tester.testOperations();
 		tester.testSimpleSort();
