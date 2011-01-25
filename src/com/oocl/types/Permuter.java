@@ -9,12 +9,31 @@ public class Permuter {
 	 * @return n!
 	 */
 	public static int factorial(int n) {
-		if ((n <= 0) || (n > 12))
+		if ((n < 0) || (n > 12))
 			throw new IndexOutOfBoundsException();
 		int result = 1;
 		for (int i=2; i <= n; i++)
 			result *= i;
 		return result;
+	}
+	
+	/**
+	 * Choose function - return the number of combinations taken k at a time from n items
+	 * Uses the multiplicative formula
+	 * 
+	 * @param n
+	 * @param k
+	 * @return n choose k
+	 */
+	public static int choose(int n, int k) {
+		if (k > n - k)	// take advantage of symmetry
+			k = n - k;
+		int c = 1;
+		for (int i=1; i <= k; i++) {
+			c *= (n - k + i);
+			c /= i;
+		}
+		return c;
 	}
 	
 	String[] in;		// the tokens to permute
@@ -57,10 +76,13 @@ public class Permuter {
 	}
 	
 	/**
-	 * Recursively generate the rearrangements
+	 * Recursively generate the rearrangements. Instead of a bit vector, Knuth uses a variable j
+	 * to keep track of which tokens are currently being permuted. His algorithm doesn't recurse
+	 * but includes a step to "find j" - which basically seems to be what our "used" array is doing.
+	 * By being careful with i and outIndex we can avoid the recursion step completely and essentially
+	 * this should be the same algorithm.
 	 * 
-	 * @param in the current list of tokens to permute
-	 * @param level the recursion level (this may not need to be done recursively)
+	 * @param level the recursion level
 	 */
 	void doPermute(int level) {
 		if (level == length) {
@@ -76,6 +98,60 @@ public class Permuter {
 			doPermute(level+1);
 			used[i] = false;
 			out[--outIndex] = null;
+		}
+	}
+	
+	public String[][] combine(String[] tokens, int t) {
+		
+		resultCount = 0;
+		results = new String[choose(tokens.length, t)][];
+		doCombine(tokens, t);
+		return results;
+	}
+	
+	/**
+	 * Algorithm 7.2.1.3L taocp by Donald Knuth: Lexicographic Combinations
+	 * This algorithm generates all t-combinations c[t-1]...c[1]c[0] of the n numbers {0,1,...,n-1},
+	 * given n >= t >= 0. Additional variables c[t] and c[t+1] are used as sentinels
+	 * 
+	 * @param tokens
+	 * @param t
+	 * @return
+	 */
+	private void doCombine(String[] tokens, int t) {
+		
+		int n = tokens.length;
+		int[] c = new int[t+2];
+		int j = 0;
+		
+		// L1. initialize
+		for (j=0; j<t; j++)
+			c[j] = j;
+		c[t] = n; c[t+1] = 0;
+		
+		while (j <= t) {		
+			// L2. visit the combination c[t-1]...c[1]c[0]
+//			String[] out = new String[t];
+//			for (int i=0; i < t; i++)
+//				out[i] = tokens[c[t-i]];
+//			results[resultCount++] = out;
+			for (int i=0; i < t; i++)
+				System.out.print(c[t-i-1]);
+			System.out.println();
+			
+			// L3. find j
+			j = 0;
+			while ((c[j] + 1) == c[j+1]) {
+				c[j+1] = j - 1;
+				j++;
+			}
+			
+			// L4. are we done?
+			if (j > t)
+				return;
+			
+			// L5. increase c[j] and return to L2
+			c[j] = c[j] + 1;
 		}
 	}
 

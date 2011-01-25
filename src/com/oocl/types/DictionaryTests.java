@@ -12,8 +12,8 @@ import java.util.PriorityQueue;
 
 public class DictionaryTests {
 
-	ArrayList<String> myWords = new ArrayList();
-	Dictionary<String, Integer> myDictionary = new Dictionary();
+	ArrayList<String> myWords = new ArrayList<String>();
+	Dictionary<String, Integer> myDictionary = new Dictionary<String, Integer>();
 	
 	/**
 	 * Load the word array into our dictionary implementation.
@@ -71,13 +71,13 @@ public class DictionaryTests {
 	
 	public void testOperations() {
 		myDictionary.put("activist", 1000);
-		Integer result = (Integer)myDictionary.get("activist");
+		Integer result = myDictionary.get("activist");
 		assert(result != null);
 		System.out.println("activist = " + result);
 	}
 	
 	public void testLookup() {
-		Integer result = (Integer)myDictionary.get("activist");
+		Integer result = myDictionary.get("activist");
 		assert(result != null);
 		System.out.println("activist = " + result);
 	}
@@ -127,7 +127,7 @@ public class DictionaryTests {
 	}
 
 	private void testQuicksort() {
-		String[] unsorted = (String[])myWords.toArray(new String[0]);
+		String[] unsorted = myWords.toArray(new String[0]);
 		long start = new Date().getTime(); 
 		String[] sorted = qsort(unsorted, unsorted.length);
 		long finish = new Date().getTime();
@@ -144,7 +144,7 @@ public class DictionaryTests {
 	}
 
 	private void testHeapsort() {
-		String[] sorted = (String[])myWords.toArray(new String[0]);
+		String[] sorted = myWords.toArray(new String[0]);
 		long start = new Date().getTime(); 
 		heapsort(sorted);
 		long finish = new Date().getTime();
@@ -161,7 +161,7 @@ public class DictionaryTests {
 	}
 
 	private void testMergesort() {
-		String[] unsorted = (String[])myWords.toArray(new String[0]);
+		String[] unsorted = myWords.toArray(new String[0]);
 		long start = new Date().getTime(); 
 		String[] sorted = mergesort(unsorted);
 		long finish = new Date().getTime();
@@ -348,11 +348,26 @@ public class DictionaryTests {
 	 */
 	public static void main(String[] args) {
 		
-	//	LexicalPermuter permuter = new LexicalPermuter();
-	//	String[] sequence = new String[] {"a", "b", "c", "d", "e"};
-	//	permuter.permute(sequence);
+		Permuter permuter = new Permuter();
 		
-		String[][] arrangements = new Permuter().permute(new String[]{"w", "x", "y", "z"});
+		// Pascal's triangle
+		for (int n=0; n <=6; n++) {
+			for (int k=0; k <= n; k++) {
+				System.out.print(" " + Permuter.choose(n, k));
+			}
+			System.out.println();
+		}
+		
+		// find all combinations of "abcdef" taken 3 at a time
+		String[][] combinations = permuter.combine(new String[] {"a", "b", "c", "d", "e", "f"}, 3);
+		for (String[] out : combinations) {
+			for (int i=0; i<out.length; i++)
+				System.out.print(out[i] + " ");
+			System.out.println();
+		}
+		
+		// find all permuations of "wxyz"
+		String[][] arrangements = permuter.permute(new String[]{"w", "x", "y", "z"});
 		for (String[] out : arrangements) {
 			for (int i=0; i<out.length; i++)
 				System.out.print(out[i] + " ");
