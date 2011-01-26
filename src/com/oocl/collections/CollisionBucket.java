@@ -1,4 +1,4 @@
-package com.oocl.types;
+package com.oocl.collections;
 
 import java.lang.reflect.Array;
 

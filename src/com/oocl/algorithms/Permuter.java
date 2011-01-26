@@ -1,4 +1,4 @@
-package com.oocl.types;
+package com.oocl.algorithms;
 
 public class Permuter {
 	
@@ -140,9 +140,9 @@ public class Permuter {
 			System.out.println();
 			
 			// L3. find j
-			j = 0;
-			while ((c[j] + 1) == c[j+1]) {
-				c[j+1] = j - 1;
+			j = 1;
+			while ((c[j] + 1) == c[j]) {
+				c[j] = j - 1;
 				j++;
 			}
 			

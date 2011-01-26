@@ -1,16 +1,19 @@
-package com.oocl.types;
+package com.oocl.collections;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.PriorityQueue;
 
-public class DictionaryTests {
+import com.oocl.algorithms.Permuter;
+
+public class CollectionTests {
 
 	ArrayList<String> myWords = new ArrayList<String>();
 	Dictionary<String, Integer> myDictionary = new Dictionary<String, Integer>();
@@ -279,39 +282,6 @@ public class DictionaryTests {
 	}
 	
 	/**
-	 * Heapsort algorithm
-	 * 
-	 * @param array of strings to sort
-	 */
-	public void heapsort(String[] unsorted) {	
-		heapify(unsorted);
-		int end = unsorted.length - 1;
-		while (end > 0) {
-			// swap the root (maximum value) with the last element of the heap
-			//swap(unsorted[end], unsorted[0]);
-			String t1 = unsorted[end];
-			unsorted[end] = unsorted[0];
-			unsorted[0] = t1;
-			// put the heap back in max-heap order
-			siftDown(unsorted, 0, end-1);
-			// decrease the size of the heap by one so the previous max value
-			// will maintain its proper placement
-			end--;
-		}
-	}
-	
-	private void heapify(String[] array) {
-		// start is assigned the index of the last parent node
-		int start = array.length / 2 - 1;
-		while (start >= 0) {
-			// sift down the node at index start so that all the nodes
-			// are in the correct heap order
-			siftDown(array, start, array.length - 1);
-			start--;
-		}
-	}
-	
-	/**
 	 * 
 	 * @param array
 	 * @param start
@@ -343,6 +313,39 @@ public class DictionaryTests {
 		}
 	}
 
+	private void heapify(String[] array) {
+		// start is assigned the index of the last parent node
+		int start = array.length / 2 - 1;
+		while (start >= 0) {
+			// sift down the node at index start so that all the nodes
+			// are in the correct heap order
+			siftDown(array, start, array.length - 1);
+			start--;
+		}
+	}
+
+	/**
+	 * Heapsort algorithm
+	 * 
+	 * @param array of strings to sort
+	 */
+	public void heapsort(String[] unsorted) {	
+		heapify(unsorted);
+		int end = unsorted.length - 1;
+		while (end > 0) {
+			// swap the root (maximum value) with the last element of the heap
+			//swap(unsorted[end], unsorted[0]);
+			String t1 = unsorted[end];
+			unsorted[end] = unsorted[0];
+			unsorted[0] = t1;
+			// put the heap back in max-heap order
+			siftDown(unsorted, 0, end-1);
+			// decrease the size of the heap by one so the previous max value
+			// will maintain its proper placement
+			end--;
+		}
+	}
+
 	/**
 	 * @param args are currently ignored. the input file name is hard-coded
 	 */
@@ -358,6 +361,7 @@ public class DictionaryTests {
 			System.out.println();
 		}
 		
+		/* TODO Broken
 		// find all combinations of "abcdef" taken 3 at a time
 		String[][] combinations = permuter.combine(new String[] {"a", "b", "c", "d", "e", "f"}, 3);
 		for (String[] out : combinations) {
@@ -365,6 +369,7 @@ public class DictionaryTests {
 				System.out.print(out[i] + " ");
 			System.out.println();
 		}
+		*/
 		
 		// find all permuations of "wxyz"
 		String[][] arrangements = permuter.permute(new String[]{"w", "x", "y", "z"});
@@ -374,7 +379,7 @@ public class DictionaryTests {
 			System.out.println();
 		}
 		
-		DictionaryTests tester = new DictionaryTests();
+		CollectionTests tester = new CollectionTests();
 		tester.testOperations();
 		tester.testSimpleSort();
 		try {
