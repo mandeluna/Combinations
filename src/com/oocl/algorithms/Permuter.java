@@ -3,6 +3,34 @@ package com.oocl.algorithms;
 public class Permuter {
 	
 	/**
+	 * Rotate the provided vector left by k places
+	 * The equivalent right rotation is by n-k places
+	 * 
+	 * @param vector
+	 * @param k
+	 * @return
+	 */
+	public static void rotate(String[] vector, int k) {
+		if (vector == null)
+			return;
+		
+		int n = vector.length;
+		
+		// check if shortest equivalent rotation is a no-op
+		if ((n == 0) || ((k = k % n) == 0))
+			return;
+		
+		String tmp = vector[0];
+		int prev = 0; int next = 0;
+		while ((next = (next + k) % n) != 0) {
+			String value = vector[next];
+			vector[prev] = value;
+			prev = next;
+		}
+		vector[prev] = tmp;
+	}
+	
+	/**
 	 * Factorial function - does not support long ints or bignums
 	 * 
 	 * @param n must be greater than zero and less than or equal to 12

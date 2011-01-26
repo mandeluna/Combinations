@@ -4,12 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
-import java.util.PriorityQueue;
 
 import com.oocl.algorithms.Permuter;
 
@@ -374,9 +370,26 @@ public class CollectionTests {
 		// find all permuations of "wxyz"
 		String[][] arrangements = permuter.permute(new String[]{"w", "x", "y", "z"});
 		for (String[] out : arrangements) {
-			for (int i=0; i<out.length; i++)
-				System.out.print(out[i] + " ");
-			System.out.println();
+			printString(out);
+		}
+		
+		System.out.println("Testing rotate()");
+		String[] vector = new String[] {"a", "b", "c", "d", "e", "f", "g", "h"};
+		printString(vector);
+		Permuter.rotate(vector, 3);
+		printString(vector);
+		Permuter.rotate(vector, 0);
+		printString(vector);
+		vector = new String[]{};
+		printString(vector);
+		Permuter.rotate(vector, 0);
+		printString(vector);
+		Permuter.rotate(vector, 3);
+		printString(vector);
+		for (int i=0; i < 20; i++) {
+			vector = new String[] {"aa", "bb", "cc", "dd", "ee", "ff", "gg", "hh"};
+			Permuter.rotate(vector, i);
+			printString(vector);
 		}
 		
 		CollectionTests tester = new CollectionTests();
@@ -395,5 +408,11 @@ public class CollectionTests {
 		tester.testQuicksort500Identical();
 		tester.testHeapsort500kIdentical();
 		tester.testMergesort500kIdentical();
+	}
+
+	private static void printString(String[] vector) {
+		for (int i=0; i<vector.length; i++)
+			System.out.print(vector[i] + " ");
+		System.out.println();
 	}
 }
