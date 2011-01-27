@@ -1,5 +1,7 @@
 package com.oocl.algorithms;
 
+import java.util.Date;
+
 /**
  * Simulate a 7-segment LED output based on an input integer between 0 and 9
  * @author WARTST
@@ -72,10 +74,13 @@ public class SevenSegment {
 	}
 	
 	private void testSegments() {
+		/*
 		for (int i=0; i < 10; i++)
 			printSegments(digit(i));
 		System.out.println();
-
+		*/
+		
+		long start = System.nanoTime();
 		int testInt = (int) (Math.random() * Integer.MAX_VALUE);
 		String[][] digits = digits(testInt);
 		System.out.println(testInt);
@@ -92,6 +97,9 @@ public class SevenSegment {
 			}
 			System.out.println();
 		}
+		long end = System.nanoTime();
+		float delta = (float) ((end - start) / 1000000.0);
+		System.out.println(delta + " milliseconds");
 	}
 	
 	public static void main(String[] args) {
