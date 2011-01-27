@@ -31,8 +31,8 @@ public class SevenSegment {
 	
 	String[] disabled = new String[] {
 			" ", " ", " ",
-			" ", " ", "  ",
-			" ", " ", "  "
+			" ", " ", " ",
+			" ", " ", " "
 	};
 	
 	private void printSegments(String[] segments) {
