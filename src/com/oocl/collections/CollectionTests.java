@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import com.oocl.algorithms.Permuter;
@@ -357,23 +358,27 @@ public class CollectionTests {
 			System.out.println();
 		}
 		
-		/* TODO Broken
 		// find all combinations of "abcdef" taken 3 at a time
-		String[][] combinations = permuter.combine(new String[] {"a", "b", "c", "d", "e", "f"}, 3);
-		for (String[] out : combinations) {
-			for (int i=0; i<out.length; i++)
-				System.out.print(out[i] + " ");
-			System.out.println();
+		String[] tokens = new String[]{"a", "b", "c", "d", "e", "f"};
+		ArrayList<String> tokenList = new ArrayList(Arrays.asList(tokens));
+		for (int k=0; k <= tokens.length; k++) {
+			System.out.println("\nTesting combine(" + k + ")");
+			ArrayList<ArrayList<String>> combinations = permuter.combine(tokenList, k);
+			for (ArrayList<String> out : combinations) {
+				for (int i=0; i<out.size(); i++)
+					System.out.print(out.get(i) + " ");
+				System.out.println();
+			}
 		}
-		*/
 		
 		// find all permuations of "wxyz"
+		System.out.println("\nTesting permute()");
 		String[][] arrangements = permuter.permute(new String[]{"w", "x", "y", "z"});
 		for (String[] out : arrangements) {
 			printString(out);
 		}
 		
-		System.out.println("Testing rotate()");
+		System.out.println("\nTesting rotate()");
 		String[] vector = new String[] {"a", "b", "c", "d", "e", "f", "g", "h"};
 		printString(vector);
 		Permuter.rotate(vector, 3);

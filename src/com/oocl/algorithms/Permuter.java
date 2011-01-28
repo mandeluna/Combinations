@@ -1,5 +1,7 @@
 package com.oocl.algorithms;
 
+import java.util.ArrayList;
+
 public class Permuter {
 	
 	/**
@@ -114,7 +116,7 @@ public class Permuter {
 	 */
 	void doPermute(int level) {
 		if (level == length) {
-			results[resultCount++] =  out.clone();	// make a copy so we can overwrite the contents
+			results[resultCount++] = out.clone();	// make a copy so we can overwrite the contents
 			return;
 		}
 		
@@ -129,14 +131,63 @@ public class Permuter {
 		}
 	}
 	
-	public String[][] combine(String[] tokens, int t) {
+	/***
+	 * Return a list of all the combinations of the token list taken k items
+	 * at a time
+	 * 
+	 * | combinations choices |
+combinations := [:tokens :k |
+(k <= 0) ifTrue: [OrderedCollection new] ifFalse: [
+((tokens size == 0) or: [k == tokens size])
+	ifTrue: [OrderedCollection with: tokens]
+	ifFalse: [
+		choices := combinations value: (tokens copyFrom: 2 to: tokens size) value: k-1.
+		choices := (choices isEmpty
+			ifTrue: [choices add: (OrderedCollection with: tokens first); yourself]
+			ifFalse: [choices collect: [:choice |
+				(OrderedCollection with: tokens first)
+					addAll: choice;
+					yourself]])
+				addAll: (combinations value: (tokens copyFrom: 2 to: tokens size) value: k);
+				yourself]]].
+^combinations value: #(a b c d e f) asOrderedCollection value: 3
+
+	 * @param tokens
+	 * @param n
+	 * @param k
+	 */
+	public ArrayList<ArrayList<String>> combine(ArrayList<String> tokens, int k) {
+		int n = tokens.size();
+		ArrayList<ArrayList<String>> choices = new ArrayList();
+		if ((n < 0) || (k <= 0))
+			return choices;
 		
-		resultCount = 0;
-		results = new String[choose(tokens.length, t)][];
-		doCombine(tokens, t);
-		return results;
+		if ((n == 0) || (n == k)) {
+			choices.add(tokens);
+			return choices;
+		}
+		
+		ArrayList<String> subchoices = new ArrayList(tokens.subList(1, n));
+		choices = combine(subchoices, k-1);
+		if (choices.size() == 0) {
+			ArrayList<String> singleton = new ArrayList();
+			singleton.add(tokens.get(0));
+			choices.add(singleton);
+		}
+		else {
+			ArrayList<ArrayList<String>> morechoices = new ArrayList();
+			for (ArrayList<String> choice : choices) {
+				ArrayList<String> tuple = new ArrayList();
+				tuple.add(tokens.get(0));
+				tuple.addAll(choice);
+				morechoices.add(tuple);
+			}
+			morechoices.addAll(combine(subchoices, k));
+			choices = morechoices;
+		}
+		return choices;
 	}
-	
+
 	/**
 	 * Algorithm 7.2.1.3L taocp by Donald Knuth: Lexicographic Combinations
 	 * This algorithm generates all t-combinations c[t-1]...c[1]c[0] of the n numbers {0,1,...,n-1},
