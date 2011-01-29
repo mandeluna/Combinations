@@ -1,7 +1,5 @@
 package com.oocl.algorithms;
 
-import java.util.Date;
-
 /**
  * Simulate a 7-segment LED output based on an input integer between 0 and 9
  * @author WARTST
