@@ -50,8 +50,10 @@ public class NumberPrinter {
 			buffer.append(printWords(number / power));
 			buffer.append(' ');
 			buffer.append(powers[factor-1]);
-			buffer.append(' ');
-			buffer.append(printWords(number % power));
+			if (number % power > 0) {
+				buffer.append(' ');
+				buffer.append(printWords(number % power));
+			}
 		}
 		
 		return buffer.toString();
@@ -76,7 +78,12 @@ public class NumberPrinter {
 			}
 			factor *= 10;
 		}
-	}
+
+		for (long j=1; j < 1000000000000000000L; j *= 10) {
+			System.out.print(j + " = ");
+			System.out.println(printer.printWords(j));
+		}
+}
 	
 	/**
 	 * Print the provided number in Roman numerals
