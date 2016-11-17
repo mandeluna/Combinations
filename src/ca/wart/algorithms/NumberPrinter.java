@@ -40,7 +40,8 @@ public class NumberPrinter {
 			buffer.append(' ');
 			buffer.append("hundred");
 			if (number % 100 > 0) {
-				buffer.append(" and ");
+//				buffer.append(" and ");
+				buffer.append(' ');
 				buffer.append(printWords(number % 100));
 			}
 		}

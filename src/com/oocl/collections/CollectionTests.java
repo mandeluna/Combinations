@@ -1,9 +1,11 @@
 package com.oocl.collections;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -67,6 +69,20 @@ public class CollectionTests {
 				}
 			}
 		}
+	}
+	
+	public void writeWordsToFile(String filename) throws IOException {
+		File file = new File(filename);
+		if (!file.exists() && !file.createNewFile()) {
+			System.err.println("Unable to create file " + filename);
+			return;
+		}
+		PrintWriter out = new PrintWriter(file);
+		for (String word : myWords) {
+			out.println(word);
+		}
+		out.close();
+		System.out.println("Wrote word list to " + file.getAbsolutePath());
 	}
 	
 	public void testOperations() {
@@ -402,6 +418,7 @@ public class CollectionTests {
 		tester.testSimpleSort();
 		try {
 			tester.loadWords("/500k_wordlist_coca_orig.txt");
+			tester.writeWordsToFile("/unsortedWords.txt");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

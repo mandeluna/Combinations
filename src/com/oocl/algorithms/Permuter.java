@@ -1,6 +1,7 @@
 package com.oocl.algorithms;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Permuter {
 	
@@ -135,23 +136,6 @@ public class Permuter {
 	 * Return a list of all the combinations of the token list taken k items
 	 * at a time
 	 * 
-	 * | combinations choices |
-combinations := [:tokens :k |
-(k <= 0) ifTrue: [OrderedCollection new] ifFalse: [
-((tokens size == 0) or: [k == tokens size])
-	ifTrue: [OrderedCollection with: tokens]
-	ifFalse: [
-		choices := combinations value: (tokens copyFrom: 2 to: tokens size) value: k-1.
-		choices := (choices isEmpty
-			ifTrue: [choices add: (OrderedCollection with: tokens first); yourself]
-			ifFalse: [choices collect: [:choice |
-				(OrderedCollection with: tokens first)
-					addAll: choice;
-					yourself]])
-				addAll: (combinations value: (tokens copyFrom: 2 to: tokens size) value: k);
-				yourself]]].
-^combinations value: #(a b c d e f) asOrderedCollection value: 3
-
 	 * @param tokens
 	 * @param n
 	 * @param k
@@ -186,52 +170,6 @@ combinations := [:tokens :k |
 			choices = morechoices;
 		}
 		return choices;
-	}
-
-	/**
-	 * Algorithm 7.2.1.3L taocp by Donald Knuth: Lexicographic Combinations
-	 * This algorithm generates all t-combinations c[t-1]...c[1]c[0] of the n numbers {0,1,...,n-1},
-	 * given n >= t >= 0. Additional variables c[t] and c[t+1] are used as sentinels
-	 * 
-	 * @param tokens
-	 * @param t
-	 * @return
-	 */
-	private void doCombine(String[] tokens, int t) {
-		
-		int n = tokens.length;
-		int[] c = new int[t+2];
-		int j = 0;
-		
-		// L1. initialize
-		for (j=0; j<t; j++)
-			c[j] = j;
-		c[t] = n; c[t+1] = 0;
-		
-		while (j <= t) {		
-			// L2. visit the combination c[t-1]...c[1]c[0]
-//			String[] out = new String[t];
-//			for (int i=0; i < t; i++)
-//				out[i] = tokens[c[t-i]];
-//			results[resultCount++] = out;
-			for (int i=0; i < t; i++)
-				System.out.print(c[t-i-1]);
-			System.out.println();
-			
-			// L3. find j
-			j = 1;
-			while ((c[j] + 1) == c[j]) {
-				c[j] = j - 1;
-				j++;
-			}
-			
-			// L4. are we done?
-			if (j > t)
-				return;
-			
-			// L5. increase c[j] and return to L2
-			c[j] = c[j] + 1;
-		}
 	}
 
 }
