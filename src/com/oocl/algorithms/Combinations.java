@@ -61,30 +61,24 @@ public class Combinations {
 	}
 
 	private List<int[]> combinations() {
-
-		visit:
 		while (j <= t) {
-
 			visit();
 			if (j > 0) {
 				x = j;
 				// T4. Increase c[j]
 				c[j-1] = x;
 				--j;
-				continue visit;
+				continue;
+			}
+			// T3. Easy case?
+			else if (c[0] + 1 < c[1]) {
+				c[0]++;
+				continue;
 			}
 			else {
-				// T3. Easy case?
-				if (c[0] + 1 < c[1]) {
-					c[0]++;
-					continue visit;
-				}
-				else {
-					j = 2;
-					findj();
-				}
+				j = 2;
+				findj();
 			}
-
 
 			// T5. Terminate the algorithm if j > t
 			if (j <= t) {
