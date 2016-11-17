@@ -1,4 +1,4 @@
-package com.oocl.collections;
+package algorithms;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,8 +9,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-
-import com.oocl.algorithms.Permuter;
 
 public class CollectionTests {
 

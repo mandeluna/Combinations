@@ -1,4 +1,4 @@
-package ca.wart.algorithms;
+package algorithms;
 
 import static java.lang.Math.*;
 

@@ -1,4 +1,4 @@
-package com.oocl.collections;
+package algorithms;
 
 import java.lang.reflect.Array;
 import java.util.Collection;

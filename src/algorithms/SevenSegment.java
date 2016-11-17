@@ -1,4 +1,4 @@
-package com.oocl.algorithms;
+package algorithms;
 
 /**
  * Simulate a 7-segment LED output based on an input integer between 0 and 9
