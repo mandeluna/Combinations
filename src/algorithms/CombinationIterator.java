@@ -33,7 +33,7 @@ public class CombinationIterator implements Iterable<int[]> {
 			System.out.println(Arrays.toString(result));
 		}
 		long now = System.currentTimeMillis();
-		combs = new CombinationIterator(100, 4);
+		combs = new CombinationIterator(100, 5);
 		int count = 0;
 		for (int[] result : combs) {
 			count++;
