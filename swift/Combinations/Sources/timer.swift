@@ -9,3 +9,9 @@ public let millis: () -> Int = {
 	}
 	return time.tv_sec * 1000 + time.tv_nsec / 1000000
 }
+
+public func millisecondsToRun(_ closure: () -> Void) -> Int {
+	let now = millis()
+	closure()
+	return millis() - now
+}
